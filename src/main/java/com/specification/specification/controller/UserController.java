@@ -8,6 +8,9 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
@@ -30,6 +33,16 @@ public class UserController {
         // Size ->
         var user = repository.findAll(spec.and(new UserSpecification().nameLike("%" + name.toLowerCase() + "%"))).size();
         return user;
+    }
+
+    @GetMapping("/3/")
+    public List<UserEntity> find3() {
+        Specification<UserEntity> spec = Specification.where(null);
+                UserEntity user = new UserEntity();
+                user.setName("test");
+                user.setUsername("test2");
+        List<UserEntity> userResponse = repository.findAll(spec.and(new UserSpecification().getUsers(user)));
+        return userResponse;
     }
 
     @PostMapping
